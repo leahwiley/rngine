@@ -1,9 +1,10 @@
 ;var rngine = rngine || (function(){
-	var has_ = (typeof(_) === 'function' && typeof(_.random) === 'function')? true : false,
+	var clock = new Date,
+		has_ = (typeof(_) === 'function' && typeof(_.random) === 'function')? true : false,
 		alog = [],// I/O Log Array
 		adbg = [];// Debug Array
-	function logIO (i,o){alog.push([i,o,DATE.getTime()]);}
-	function logDbg (i,o){adbg.push([i,o,DATE.getTime()]);}
+	function logIO (i,o){alog.push([i,o,clock.getTime()]);}
+	function logDbg (i,o){adbg.push([i,o,clock.getTime()]);}
 	function primitiveRNG (min,max){
 		// Ensure arguments are not undefined
 		min = Number(min) || 0;
@@ -30,6 +31,9 @@
 		}
 		return x;
 	}
+	function primitiveShuffle (aSet){
+		return aSet.toString();
+	}
 	var RNG = {
 		roll: function (cmd){
 			var face = 0;
@@ -55,11 +59,12 @@
 				if(typeof(name) === 'string' && name.length && name !== 'roll' && name !== 'add') RNG.custom[name] = arrayify(aSet);
 			}
 		},
-		/*draw: function (deckName){
-			var card = '';
-			logIO(deckName,card);
-			return card;
-		},*/
+		deck: {
+			create: function (aSet){
+
+			},
+			shuffle: (false && has_)? _.shuffle : primitiveShuffle
+		},
 		logs: {
 			io: function (){return alog;},
 			debug: function (){return adbg;}
